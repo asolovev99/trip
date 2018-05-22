@@ -6,6 +6,7 @@ struct Node2 {
     Node2 * next;
 };
 int A, B, local;
+bool closed = false;
 Node2 * head = NULL;
 Node2 * headway = NULL;
 Node2 * first; // перекрытая дорога
@@ -136,6 +137,13 @@ void sort(){ // перебирает все возможные комбинац�
         while (end_second == false) {
             while(end_third == false) {
                 test();
+                if (possible == false) {
+                    printf("It's possible");
+                    end_first = true;
+                    end_second = true;
+                    end_third = true;
+                    closed = true;
+                }
                 possible = false;
                 //            printf("\ntest\n");
                 if (third->next == NULL) { // является ли точка third последней точкой списка?
@@ -168,5 +176,8 @@ int main() {
     scanf("%i %i",&A,&B);
     local = A;
     sort();
+    if (closed == false) {
+        printf("It's impossible");
+    }
     return 0;
 }
