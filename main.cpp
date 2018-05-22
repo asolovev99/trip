@@ -17,24 +17,26 @@ Node2 * way = NULL; // голова пути, по которому мы про�
 Node2 * wayend = NULL; //  с помощью этого указателя "ходим" по списку с путём, пройденным в test
 bool find(Node2 * road){ //
     Node2 * a = way;
-    bool end = false;
-    while (end == false){
-        if ((road->begin == a->begin) && (road->end == a->end)) {
-            end = true;
-            return true;
-        }
-        else {
-            if (a->next == NULL){
+    if (a != NULL) {
+        bool end = false;
+        while (end == false) {
+            if ((road->begin == a->begin) && (road->end == a->end)) {
                 end = true;
-                return false;
-            }
-            else {
-                a = a->next;
+                return true;
+            } else {
+                if (a->next == NULL) {
+                    end = true;
+                    return false;
+                } else {
+                    a = a->next;
+                }
             }
         }
+
     }
-
-
+    else {
+        return false;
+    }
 }
 void scan (){   // сканирует дороги
     FILE * input;
@@ -73,6 +75,7 @@ void test(){ // проверяет можно ли дойти от города 
                 wayend->prev = NULL;
                 wayend->begin = road->begin;
                 wayend->end = road->end;
+                printf("way == NULL\n");
             }
             else {
                 while (wayend->next != NULL){
@@ -84,6 +87,7 @@ void test(){ // проверяет можно ли дойти от города 
                 wayend->next = NULL;
                 wayend->begin = road->begin;
                 wayend->end = road->end;
+                printf("add new ellement\n");
             }
             if (local != B) {
                 test();
@@ -98,6 +102,7 @@ void test(){ // проверяет можно ли дойти от города 
                 wayend = NULL;
                 local = A;
                 take = true;
+                printf("we in B\n");
             }
         }
         else { // не нашли дорогу, по которой можно ехать
@@ -117,13 +122,21 @@ void test(){ // проверяет можно ли дойти от города 
                         local = wayend->end;
                     }
                     wayend = wayend->prev;
-                    delete (wayend->next);
-                    wayend->next = NULL;
+                    printf("back wayend = wayend->prev;\n");
+                    if (wayend != NULL) {
+                        if (wayend->next != NULL) {
+						delete (wayend->next);
+					    }
+                    }
+                    if (wayend != NULL) {
+                        wayend->next = NULL;
+                        printf("end of roads wayend->next = NULL\n ");
+                    }
 
                 }
-                else {
-                    way = NULL;
-                }
+                
+                 if (wayend == NULL) way = NULL;
+                
             }
         }
     }
@@ -179,5 +192,6 @@ int main() {
     if (closed == false) {
         printf("It's impossible");
     }
+	system("pause");
     return 0;
 }
